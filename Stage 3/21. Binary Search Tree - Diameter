@@ -1,0 +1,84 @@
+#include<iostream>
+using namespace std;
+class Node
+{
+    public:
+        int data;
+        Node *left,*right;
+};
+void append(Node **rootadd,int data)
+{
+    int flag = 0;
+    Node *temp,*newnode,*temp1;
+    temp = *rootadd;
+    temp1 = *rootadd;
+    newnode = new Node();
+    newnode->left = NULL;
+    newnode->data = data;
+    newnode->right = NULL;
+    if(*rootadd == NULL)
+        *rootadd = newnode;
+    else
+    {
+        while(1)
+        {
+            if(temp1 != NULL)
+            {
+                if(temp1->left == NULL)
+                {
+                    temp1->left = newnode;
+                    break;
+                }
+                else if(temp1->right == NULL)
+                {
+                    temp1->right = newnode;
+                    break;
+                }
+                else if(flag == 0)
+                {
+                    temp1 = temp->left;
+                    flag = 1;
+                }
+                else
+                {
+                    temp1 = temp->right;
+                    flag = 0;
+                    temp = temp->left;
+                }   
+            }
+        }
+    }
+}
+int max(int a, int b) 
+{ 
+  return (a >= b)? a: b; 
+}  
+int height(Node *node) 
+{ 
+   if(node == NULL) 
+       return 0; 
+   return 1 + max(height(node->left), height(node->right)); 
+}     
+int diameter(Node *tree) 
+{ 
+   if (tree == NULL) 
+     return 0; 
+  int lheight = height(tree->left); 
+  int rheight = height(tree->right); 
+  int ldiameter = diameter(tree->left); 
+  int rdiameter = diameter(tree->right); 
+  return max(lheight + rheight + 1, max(ldiameter, rdiameter)); 
+}  
+int main()
+{
+    Node *root = NULL;
+    int data;
+    do
+    {
+        cin>>data;
+        if(data > 0)
+            append(&root,data);
+    }while(data > 0);
+    cout<<"Diameter of the given binary tree is "<<diameter(root);
+    return 0;
+}
